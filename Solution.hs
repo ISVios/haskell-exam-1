@@ -3,40 +3,54 @@ class Fluffy f where
 
 -- Exercise 1
 -- Relative Difficulty: 1
+-- (a -> b) -> [a] -> [b]
 instance Fluffy [] where
-  furry = error "todo"
+  furry = map 
 
 -- Exercise 2
 -- Relative Difficulty: 1
+-- (a -> b) -> Just a -> Just b
 instance Fluffy Maybe where
-  furry = error "todo"
+  furry = fmap
+  --furry = \fi(Just a)  -> Just $ f a
 
 -- Exercise 3
 -- Relative Difficulty: 5
+-- (a -> b) -> (t -> a)-> (t -> b) -- func -> func -> func 
+-- t -> a -> b --> t->b 
 instance Fluffy ((->) t) where
-  furry = error "todo"
+  furry = \f g -> f.g
 
 newtype EitherLeft b a = EitherLeft (Either a b)
 newtype EitherRight a b = EitherRight (Either a b)
 
 -- Exercise 4
 -- Relative Difficulty: 5
+-- data Either a b = Left a | Right b
+-- (a -> b) -> EitherLeft t a -> EitherLeft t b -- func -> Either a t -> Either b t
 instance Fluffy (EitherLeft t) where
-  furry = error "todo"
+  furry = \f (EitherLeft t) -> case t of
+                                 (Left  a) -> EitherLeft . Left . f $ a
+                                 (Right a) -> EitherLeft . Right $ a
 
 -- Exercise 5
 -- Relative Difficulty: 5
+-- data Either a b = Left a | Right b
+-- (a -> b) -> EitherRight t a -> EitherRight t b -- func -> Either t a -> Either t a
 instance Fluffy (EitherRight t) where
-  furry = error "todo"
-
+  furry = \f (EitherRight t) -> case t of
+                                  (Left a)  -> EitherRight . Left $ a
+                                  (Right a) -> EitherRight . Right . f $ a
+-- It just Monad
 class Misty m where
-  banana :: (a -> m b) -> m a -> m b
-  unicorn :: a -> m a
+  banana :: (a -> m b) -> m a -> m b -- bind >>=
+  unicorn :: a -> m a -- return
   -- Exercise 6
   -- Relative Difficulty: 3
   -- (use banana and/or unicorn)
-  furry' :: (a -> b) -> m a -> m b
-  furry' = error "todo"
+  --
+  furry' :: (a -> b) -> m a -> m b -- or (a -> b) -> (m a -> m b) -- func -> monadFunc
+  furry' =error "" -- \i (m a) -> unicorn (f a)
 
 -- Exercise 7
 -- Relative Difficulty: 2
