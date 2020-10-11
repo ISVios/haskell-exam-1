@@ -50,47 +50,68 @@ class Misty m where
   -- (use banana and/or unicorn)
   --
   furry' :: (a -> b) -> m a -> m b -- or (a -> b) -> (m a -> m b) -- func -> monadFunc
-  furry' =error "" -- \i (m a) -> unicorn (f a)
+  furry' = \f m -> (banana $ unicorn . f)  m
+        
 
 -- Exercise 7
 -- Relative Difficulty: 2
+-- banana :: (a -> [b]) -> [a] -> [b]
 instance Misty [] where
-  banana = error "todo"
-  unicorn = error "todo"
+  banana  = \f arr -> case arr of
+                        (x : xs) -> f x ++ (banana f xs)
+                        []       -> []
+
+  unicorn = \x -> [x]
 
 -- Exercise 8
 -- Relative Difficulty: 2
 instance Misty Maybe where
-  banana = error "todo"
-  unicorn = error "todo"
+  banana  = \f m -> case m of
+                      Just x  -> f x
+                      Nothing -> Nothing
+
+  unicorn = \x -> Just x
 
 -- Exercise 9
 -- Relative Difficulty: 6
+-- banana  :: (a -> t -> b) -> (t -> a) -> (t -> b)
+-- unicorn ::  x -> t -> x)
 instance Misty ((->) t) where
-  banana = error "todo"
-  unicorn = error "todo"
+  banana  = \f m -> \t -> f (m t) t  -- It was hard
+
+  unicorn = const -- or \x -> \t -> x
 
 -- Exercise 10
 -- Relative Difficulty: 6
+--newtype EitherLeft b a = EitherLeft (Either a b)
+--banana :: (a -> m b) -> m a -> m b -- bind >>=
 instance Misty (EitherLeft t) where
-  banana = error "todo"
-  unicorn = error "todo"
+  banana =  \f e -> case e of
+                    (EitherLeft (Left x))  -> f x
+                    (EitherLeft (Right x)) -> EitherLeft . Right $ x  -- or otherwise
+
+  unicorn = \x   -> EitherLeft . Left $ x
 
 -- Exercise 11
 -- Relative Difficulty: 6
+--newtype EitherRight a b = EitherRight (Either a b)
 instance Misty (EitherRight t) where
-  banana = error "todo"
-  unicorn = error "todo"
+  banana  = \f m -> case m of
+                     (EitherRight (Right x)) -> f x
+                     (EitherRight (Left x))  ->  EitherRight . Left $ x -- why i can't use q@(EitherRight (Left x)) -> q
+
+
+  unicorn = \x   -> EitherRight . Right $ x
 
 -- Exercise 12
 -- Relative Difficulty: 3
 jellybean :: (Misty m) => m (m a) -> m a
-jellybean = error "todo"
+jellybean = banana id --- My brain blow up. id :: a -> a | banana :: (a -> m b) -> m a -> m b . So (m a -> m a) -> m (m a) -> m a
 
 -- Exercise 13
 -- Relative Difficulty: 6
 apple :: (Misty m) => m a -> m (a -> b) -> m b
-apple = error "todo"
+apple = \m mf ->  -- Why I can't separete m and a without functions
 
 -- Exercise 14
 -- Relative Difficulty: 6
