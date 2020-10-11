@@ -111,7 +111,7 @@ jellybean = banana id --- My brain blow up. id :: a -> a | banana :: (a -> m b) 
 -- Exercise 13
 -- Relative Difficulty: 6
 apple :: (Misty m) => m a -> m (a -> b) -> m b
-apple = \m mf ->  -- Why I can't separete m and a without functions
+apple = \m mf ->  -- Why I can't separate m and a without functions
 
 -- Exercise 14
 -- Relative Difficulty: 6
