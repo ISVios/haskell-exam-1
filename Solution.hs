@@ -110,8 +110,12 @@ jellybean = banana id --- My brain blow up. id :: a -> a | banana :: (a -> m b) 
 
 -- Exercise 13
 -- Relative Difficulty: 6
+-- flip furry' :: Misty m => m a -> (a -> b) -> m b
+-- how (a - > b) -> m b  to  m (a -> b) -> m b 
 apple :: (Misty m) => m a -> m (a -> b) -> m b
-apple = \m mf ->  -- Why I can't separate m and a without functions
+apple =  banana . flip furry'
+
+
 
 -- Exercise 14
 -- Relative Difficulty: 6
