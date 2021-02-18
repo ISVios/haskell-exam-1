@@ -63,6 +63,7 @@ instance Misty [] where
 
   unicorn = \x -> [x]
 
+
 -- Exercise 8
 -- Relative Difficulty: 2
 instance Misty Maybe where
@@ -72,6 +73,7 @@ instance Misty Maybe where
 
   unicorn = \x -> Just x
 
+
 -- Exercise 9
 -- Relative Difficulty: 6
 -- banana  :: (a -> t -> b) -> (t -> a) -> (t -> b)
@@ -80,6 +82,7 @@ instance Misty ((->) t) where
   banana  = \f m -> \t -> f (m t) t  -- It was hard
 
   unicorn = const -- or \x -> \t -> x
+
 
 -- Exercise 10
 -- Relative Difficulty: 6
@@ -92,6 +95,7 @@ instance Misty (EitherLeft t) where
 
   unicorn = \x   -> EitherLeft . Left $ x
 
+
 -- Exercise 11
 -- Relative Difficulty: 6
 --newtype EitherRight a b = EitherRight (Either a b)
@@ -103,10 +107,12 @@ instance Misty (EitherRight t) where
 
   unicorn = \x   -> EitherRight . Right $ x
 
+
 -- Exercise 12
 -- Relative Difficulty: 3
 jellybean :: (Misty m) => m (m a) -> m a
 jellybean = banana id --- My brain blow up. id :: a -> a | banana :: (a -> m b) -> m a -> m b . So (m a -> m a) -> m (m a) -> m a
+
 
 -- Exercise 13
 -- Relative Difficulty: 6
@@ -116,17 +122,21 @@ apple :: (Misty m) => m a -> m (a -> b) -> m b
 apple =  banana . flip furry'
 
 
-
 -- Exercise 14
 -- Relative Difficulty: 6
+-- cheat: sequence $ map f e
 moppy :: (Misty m) => [a] -> (a -> m b) -> m [b]
-moppy = error "todo"
+moppy [] _     = unicorn []
+moppy (x:xs) f = f x
+
 
 -- Exercise 15
 -- Relative Difficulty: 6
 -- (bonus: use moppy)
+-- cheat: sequence
 sausage :: (Misty m) => [m a] -> m [a]
 sausage = error "todo"
+
 
 -- Exercise 16
 -- Relative Difficulty: 6
@@ -134,11 +144,13 @@ sausage = error "todo"
 banana2 :: (Misty m) => (a -> b -> c) -> m a -> m b -> m c
 banana2 = error "todo"
 
+
 -- Exercise 17
 -- Relative Difficulty: 6
 -- (bonus: use apple + banana2)
 banana3 :: (Misty m) => (a -> b -> c -> d) -> m a -> m b -> m c -> m d
 banana3 = error "todo"
+
 
 -- Exercise 18
 -- Relative Difficulty: 6
@@ -150,10 +162,12 @@ newtype State s a = State {
   state :: (s -> (s, a))
 }
 
+
 -- Exercise 19
 -- Relative Difficulty: 9
 instance Fluffy (State s) where
   furry = error "todo"
+
 
 -- Exercise 20
 -- Relative Difficulty: 10
