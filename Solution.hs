@@ -127,7 +127,8 @@ apple =  banana . flip furry'
 -- cheat: sequence $ map f e
 moppy :: (Misty m) => [a] -> (a -> m b) -> m [b]
 moppy [] _     = unicorn []
-moppy (x:xs) f = f x
+moppy (x:xs) f = banana (\a -> banana  (\b -> unicorn $ a : b) (moppy xs f)) (f x)
+
 
 
 -- Exercise 15
@@ -135,7 +136,7 @@ moppy (x:xs) f = f x
 -- (bonus: use moppy)
 -- cheat: sequence
 sausage :: (Misty m) => [m a] -> m [a]
-sausage = error "todo"
+sausage ma = moppy ma (id) 
 
 
 -- Exercise 16
