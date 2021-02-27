@@ -142,22 +142,29 @@ sausage ma = moppy ma (id)
 -- Exercise 16
 -- Relative Difficulty: 6
 -- (bonus: use apple + furry')
+-- without bounus 
+--   banana2 f ma mb = banana (\a -> banana (\b -> unicorn $ f a b ) mb ) ma
 banana2 :: (Misty m) => (a -> b -> c) -> m a -> m b -> m c
-banana2 = error "todo"
+banana2 f ma mb = banana (\a -> banana (\b -> unicorn $ f a b ) mb ) ma
 
 
 -- Exercise 17
 -- Relative Difficulty: 6
 -- (bonus: use apple + banana2)
+-- without bonus
+--   banana3 f ma mb mc = banana (\a -> banana (\b -> banana (\c -> unicorn $ f a b c ) mc ) mb  ) ma 
 banana3 :: (Misty m) => (a -> b -> c -> d) -> m a -> m b -> m c -> m d
-banana3 = error "todo"
+banana3 f ma mb mc = banana (\a -> banana (\b -> banana (\c -> unicorn $ f a b c ) mc ) mb  ) ma 
 
 
 -- Exercise 18
 -- Relative Difficulty: 6
 -- (bonus: use apple + banana3)
+-- without bonus
+--  banana4 f ma mb mc md = banana (\a -> banana (\b -> banana (\c-> banana (\d -> unicorn $ f a b c d) md ) mc ) mb ) ma 
+
 banana4 :: (Misty m) => (a -> b -> c -> d -> e) -> m a -> m b -> m c -> m d -> m e
-banana4 = error "todo"
+banana4 f ma mb mc md = banana (\a -> banana (\b -> banana (\c-> banana (\d -> unicorn $ f a b c d) md ) mc ) mb ) ma 
 
 newtype State s a = State {
   state :: (s -> (s, a))
@@ -167,11 +174,19 @@ newtype State s a = State {
 -- Exercise 19
 -- Relative Difficulty: 9
 instance Fluffy (State s) where
-  furry = error "todo"
+-- furry :: (a -> b) -> f a -> f b
+--          (a -> b) -> (s -> (s, a)) -> (s -> (s, b)) 
+  furry f fa = banana (\a -> unicorn $ f a ) fa
 
 
+-- ToDo: Fix
 -- Exercise 20
 -- Relative Difficulty: 10
 instance Misty (State s) where
-  banana = error "todo"
-  unicorn = error "todo"
+  -- banana :: (a -> m b) -> m a -> m b 
+  banana f ma = State $ \s -> 
+    let (s', a)  = state  ma   s 
+        (s'', b) = state (f a) s
+      in
+        (s , b) --- how mappend 
+  unicorn a  = State $ \s -> (s, a) 
